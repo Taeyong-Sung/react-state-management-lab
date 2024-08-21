@@ -77,6 +77,22 @@ const [zombieFighters, setZombieFighters] = useState([
     img: 'https://via.placeholder.com/150/602b9e',
   },
 ]);
+
+function handleAddFighter(idx){
+  setTeam([...team, zombieFighters.at(idx)])
+  setMoney(money - zombieFighters.at(idx)['price'])
+}
+
+function handleAddFighter(idx) {
+  const zombieFighter = zombieFighters[idx];
+  if (money >= zombieFighter.price) {
+    setTeam([...team, zombieFighter]);
+    setMoney(money - zombieFighter.price);
+  } else {
+    console.log("Not enough money");
+  }
+}
+
   return (
     <>
       <h1>Zombie Fighters</h1>
@@ -87,15 +103,13 @@ const [zombieFighters, setZombieFighters] = useState([
       <ul>
         {zombieFighters.map((zombieFighter,index) => (
           <li key={index}>
-            <li><img src={zombieFighter.img} alt='zombieFighter' /></li>
-            <li>{zombieFighter.name}</li>
-            <li>price: ${zombieFighter.price}</li>
-            <li>Strength: {zombieFighter.strength}</li>
-            <li>Agility: {zombieFighter.agility}</li>
-            <li></li><button onClick={()=> 
-      //add adding to team function here
-              something }>Add</button><li></li>
-          </li>
+            <p><img src={zombieFighter.img} alt='zombieFighter' /></p>
+            <p>{zombieFighter.name}</p>
+            <p>price: ${zombieFighter.price}</p>
+            <p>Strength: {zombieFighter.strength}</p>
+            <p>Agility: {zombieFighter.agility}</p>
+            <p><button onClick={()=> 
+              handleAddFighter(index) }>Add</button></p></li>
         ))}
       </ul>
     </>
