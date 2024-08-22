@@ -93,6 +93,8 @@ function handleAddFighter(idx) {
   }
 }
 
+
+
   return (
     <>
       <h1>Zombie Fighters</h1>
@@ -100,6 +102,18 @@ function handleAddFighter(idx) {
       <h2>Team Strength: </h2>
       <h2>Team Agility: </h2>
       <h2>Team</h2>
+      <ul>
+        {team.length === 0 ? (<p>Pick some team members!</p>) : (team.map((zombieFighter, index) => (
+          <li key={index}>
+            <p><img src={zombieFighter.img} alt='zombieFighter' /></p>
+            <p>{zombieFighter.name}</p>
+            <p>price: ${zombieFighter.price}</p>
+            <p>Strength: {zombieFighter.strength}</p>
+            <p>Agility: {zombieFighter.agility}</p>
+          </li>
+        )))}
+      </ul>
+      <h2>Fighters</h2>
       <ul>
         {zombieFighters.map((zombieFighter,index) => (
           <li key={index}>
