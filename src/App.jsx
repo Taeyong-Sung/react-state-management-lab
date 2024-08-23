@@ -5,6 +5,8 @@ import './App.css'
 const App = () => {
 const [team, setTeam] = useState([]);
 const [money, setMoney] = useState(100);
+const [totalStrength, setTotalStrength] = useState(0)
+const [totalAgility, setTotalAgility] = useState(0)
 const [zombieFighters, setZombieFighters] = useState([
   {
     name: 'Survivor',
@@ -78,29 +80,37 @@ const [zombieFighters, setZombieFighters] = useState([
   },
 ]);
 
-function handleAddFighter(idx){
-  setTeam([...team, zombieFighters.at(idx)])
-  setMoney(money - zombieFighters.at(idx)['price'])
-}
-
 function handleAddFighter(idx) {
   const zombieFighter = zombieFighters[idx];
   if (money >= zombieFighter.price) {
+    const copyTeam = [...team, zombieFighter];
     setTeam([...team, zombieFighter]);
     setMoney(money - zombieFighter.price);
+    const addTotalStrength = copyTeam.reduce((accumulator, fighter) => accumulator + fighter.strength, 0);
+    const addTotalAgility = copyTeam.reduce((accumulator, fighter) => accumulator + fighter.agility, 0);
+    setTotalStrength(addTotalStrength);
+    setTotalAgility(addTotalAgility)
   } else {
     console.log("Not enough money");
   }
 }
 
-
+function handleRemoveFighter(idx) {
+  const zombieFighter = team[idx];
+  const newTeam = [...team];
+  newTeam.splice(idx, 1);
+  setTeam(newTeam);
+  setMoney((prevMoney) => prevMoney + zombieFighter.price);
+  setTotalStrength((prevStrength) => prevStrength - zombieFighter.strength);
+  setTotalAgility((prevAgility) => prevAgility - zombieFighter.agility);
+}
 
   return (
     <>
       <h1>Zombie Fighters</h1>
       <h2>Money:$ {money}</h2>
-      <h2>Team Strength: </h2>
-      <h2>Team Agility: </h2>
+      <h2>Team Strength: {totalStrength}</h2>
+      <h2>Team Agility: {totalAgility}</h2>
       <h2>Team</h2>
       <ul>
         {team.length === 0 ? (<p>Pick some team members!</p>) : (team.map((zombieFighter, index) => (
@@ -110,6 +120,8 @@ function handleAddFighter(idx) {
             <p>price: ${zombieFighter.price}</p>
             <p>Strength: {zombieFighter.strength}</p>
             <p>Agility: {zombieFighter.agility}</p>
+            <p><button onClick={()=> 
+              handleRemoveFighter(index) }>Remove</button></p>
           </li>
         )))}
       </ul>
